@@ -108,12 +108,12 @@ jobs:
       - name: Build release APK
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
         run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+             chmod +x gradlew
+             ./gradlew assembleRelease --no-daemon
 
       - name: Upload Aamshu APK
         uses: actions/upload-artifact@v4
         with:
-          name: Aamshu-release
-          path: ${{ steps.mobile.outputs.mobile_dir }}/android/app/build/outputs/apk/release/**
-          if-no-files-found: error
+         name: Aamshu-release
+         path: ${{ steps.mobile.outputs.mobile_dir }}/android/app/build/outputs/apk/release/*.apk
+         if-no-files-found: error
