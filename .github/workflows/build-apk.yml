@@ -67,7 +67,7 @@ jobs:
 
       - name: Generate Android project
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}
-        run: npx expo prebuild --platform android --non-interactive
+        run: CI=1 npx expo prebuild --platform android  
 
       - name: Build debug APK
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
