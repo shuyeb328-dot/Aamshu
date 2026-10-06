@@ -32,7 +32,7 @@ jobs:
         id: findzip
         shell: bash
         run: |
-          ZIP="./aamshu-github-ready-aamshu-v4.6.zip"
+          ZIP="./aamshu-github-ready-aamshu-v4.6-fixed-v2.zip"
 
           if [ ! -f "$ZIP" ]; then
             echo "Required Aamshu ZIP not found: $ZIP"
