@@ -80,24 +80,6 @@ jobs:
         run: |
           echo "android.useAndroidX=true" >> gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
-          echo "android.jetifier.ignorelist=" >> gradle.properties
-               - name: Fix Aamshu Java source
-          working-directory: ${{ steps.mobile.outputs.mobile_dir }}
-           run: |
-          FILE="android/app/src/main/java/com/aamshu/assistant/AamshuAssistantModule.java"
-
-          if [ ! -f "$FILE" ]; then
-            echo "AamshuAssistantModule.java not found"
-            exit 1
-          fi
-
-          echo "Before fix:"
-          sed -n '1,25p' "$FILE"
-
-          sed -i 's/private static volatile boolean setActive(false);/private static volatile boolean setActive = false;/' "$FILE"
-
-          echo "After fix:"
-          sed -n '1,25p' "$FILE"
       - name: Pin Gradle 8.8
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
         run: |
