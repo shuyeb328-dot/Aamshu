@@ -66,18 +66,26 @@ jobs:
         run: |
           npm install
           npx expo install --fix
+
       - name: Generate Android project
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}
         run: CI=1 npx expo prebuild --platform android
-        
+
+      - name: Enable AndroidX and Jetifier
+        working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
+        run: |
+          echo "android.useAndroidX=true" >> gradle.properties
+          echo "android.enableJetifier=true" >> gradle.properties
+          echo "android.jetifier.ignorelist=" >> gradle.properties
+
       - name: Pin Gradle 8.8
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
         run: |
-         sed -i -E 's#gradle-[0-9.]+-(all|bin)\.zip#gradle-8.8-all.zip#' gradle/wrapper/gradle-wrapper.properties
-         grep distributionUrl gradle/wrapper/gradle-wrapper.properties
+          sed -i -E 's#gradle-[0-9.]+-(all|bin)\.zip#gradle-8.8-all.zip#' gradle/wrapper/gradle-wrapper.properties
+          grep distributionUrl gradle/wrapper/gradle-wrapper.properties
 
       - name: Build debug APK
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
         run: |
-         chmod +x gradlew
-         ./gradlew assembleDebug --no-daemon
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
