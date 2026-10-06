@@ -74,7 +74,17 @@ jobs:
       - name: Generate Android project
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}
         run: CI=1 npx expo prebuild --platform android
+      - name: Fix Aamshu Java source
+        working-directory: ${{ steps.mobile.outputs.mobile_dir }}
+        run: |
+          FILE="android/app/src/main/java/com/aamshu/assistant/AamshuAssistantModule.java"
 
+          echo "Fixing AamshuAssistantModule.java"
+
+          sed -i 's/setActive(false)/setActive = false/g' "$FILE"
+
+          echo "Checking fix:"
+          grep -n "setActive" "$FILE"
       - name: Enable AndroidX and Jetifier
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
         run: |
