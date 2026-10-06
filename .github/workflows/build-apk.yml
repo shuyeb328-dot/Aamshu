@@ -80,6 +80,8 @@ jobs:
         run: |
           echo "android.useAndroidX=true" >> gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
+          echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> gradle.properties
+    
       - name: Pin Gradle 8.8
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
         run: |
