@@ -63,8 +63,9 @@ jobs:
 
       - name: Install mobile dependencies
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}
-        run: npm install
-
+        run: |
+          npm install
+          npx expo install --fix
       - name: Generate Android project
         working-directory: ${{ steps.mobile.outputs.mobile_dir }}
         run: CI=1 npx expo prebuild --platform android
