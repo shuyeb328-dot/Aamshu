@@ -32,13 +32,17 @@ jobs:
         id: findzip
         shell: bash
         run: |
-          ZIP="$(find . -maxdepth 1 -type f -name '*.zip' | head -n 1)"
-          if [ -z "$ZIP" ]; then
-            echo "No Aamshu ZIP found."
+          ZIP="./aamshu-github-ready-aamshu-v4.6.zip"
+
+          if [ ! -f "$ZIP" ]; then
+            echo "Required Aamshu ZIP not found: $ZIP"
+            echo "ZIP files currently in repository:"
+            find . -maxdepth 1 -type f -name '*.zip' -print
             exit 1
           fi
+
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
-          echo "Found: $ZIP"
+          echo "Using: $ZIP"
 
       - name: Extract Aamshu source
         shell: bash
