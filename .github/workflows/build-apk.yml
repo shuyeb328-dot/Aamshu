@@ -66,19 +66,17 @@ jobs:
         run: npm install
 
       - name: Generate Android project
-        working-directory: ${{ steps.mobile.outputs.mobile_dir }}
-        run: CI=1 npx expo prebuild --platform android  
+      working-directory: ${{ steps.mobile.outputs.mobile_dir }}
+      run: CI=1 npx expo prebuild --platform android
 
-      - name: Build debug APK
-        working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+    - name: Pin Gradle 8.8
+      working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
+      run: |
+        sed -i -E 's#gradle-[0-9.]+-(all|bin)\.zip#gradle-8.8-all.zip#' gradle/wrapper/gradle-wrapper.properties
+        grep distributionUrl gradle/wrapper/gradle-wrapper.properties
 
-      - name: Upload Aamshu APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: aamshu-debug-apk
-          path: ${{ steps.mobile.outputs.mobile_dir }}/android/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
-          retention-days: 14
+    - name: Build debug APK
+      working-directory: ${{ steps.mobile.outputs.mobile_dir }}/android
+      run: |
+        chmod +x gradlew
+        ./gradlew assembleDebug --no-daemon
